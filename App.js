@@ -2,7 +2,7 @@ const Url = require('url'),
   ParseStr = require('xml2js').parseString, 
   Http = require('http'), 
   Https = require('https'),
-  {PerformanceObserver, performance} = require('perf_hooks');
+  {performance} = require('perf_hooks');
 
 class HttpClient {
   constructor(user) {
