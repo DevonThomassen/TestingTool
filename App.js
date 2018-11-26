@@ -1,8 +1,7 @@
-const Url = require('url'), // protocol and split function
-  ParseStr = require('xml2js').parseString, // xml reader to json
-  Http = require('http'), // http version determine it with url.protocol
-  Https = require('https'), // https version determine it with url.protocol
-  { PerformanceObserver, performance } = require('perf_hooks');
+const Url = require('url'), 
+  ParseStr = require('xml2js').parseString, 
+  Http = require('http'), 
+  Https = require('https'); 
 
 class HttpClient {
   constructor(user) {
@@ -159,7 +158,7 @@ class SitemapIndex {
 
   static fromData(data) {
     if (!data || !data.sitemapindex || !data.sitemapindex.sitemap) {
-      return false; // returns false if sitemapindex is possible to make
+      return false; 
     }
 
     let urls = data.sitemapindex.sitemap.map((sitemap) => {
@@ -207,11 +206,11 @@ class Image {
 }
 
 (() => {
-  const url = 'protocol://domain/sitemap';
+  const url = 'protocol://domain/path';
 
   const user = {
-    username: 'preview',
-    password: 'preview',
+    username: 'username',
+    password: 'password',
   };
 
   let client = new HttpClient(user);
