@@ -1,7 +1,7 @@
-const Url = require('url'), 
-  ParseStr = require('xml2js').parseString, 
-  Http = require('http'), 
-  Https = require('https'),
+const Url = require('url'), // protocol and split function
+  ParseStr = require('xml2js').parseString, // xml reader to json
+  Http = require('http'), // http version determine it with url.protocol
+  Https = require('https'), // https version determine it with url.protocol
   {performance} = require('perf_hooks');
 
 class HttpClient {
@@ -18,7 +18,7 @@ class HttpClient {
   }
 
   dequeue() {
-    while(this.operations < 10 && this.requests.length > 0) {
+    while (this.operations < 10 && this.requests.length > 0) {
       this.operations++;
       this.get(this.requests.shift(), () => {
         this.operations--;
@@ -28,9 +28,15 @@ class HttpClient {
   }
 
   get(request, onComplete) {
+    if (!Url.parse(request.urlStr).hostname) {
+      request.onError('Invalid url `'+ request.urlStr +'`.');
+      onComplete();
+      return;
+    }
+
     let url = new URL(request.urlStr);
     let options = {
-      auth: this.username +":"+ this.password
+      auth: this.username + ":" + this.password
     };
     let protocol = url.protocol === 'http:' ? Http : Https;
     let startTime = performance.now();
@@ -47,16 +53,16 @@ class HttpClient {
 
         if (Math.floor(res.statusCode / 100) === 3) {
           let location = Url.resolve(url.href, res.headers.location);
-          this.get(location, request.onComplete, request.onError);
+          this.queue(location, request.onComplete, request.onError);
         } else {
-          request.onComplete(new HttpResult(url.href, res.statusCode, Math.floor(endTime-startTime), data));
+          request.onComplete(new HttpResult(url.href, res.statusCode, Math.floor(endTime - startTime), data));
           onComplete();
         }
       });
     });
 
     req.on('error', (e) => {
-      request.onError(e);
+      request.onError(e.code);
       onComplete();
     });
 
@@ -99,11 +105,7 @@ class SitemapCrawler {
     this.operations--;
 
     if (this.operations < 1) {
-      if(this.errors.length > 0) {
-        this.onError(this.errors);
-      }
-
-      this.onComplete(this.results);
+      this.onComplete(this.results, this.errors);
     }
   }
 
@@ -111,6 +113,7 @@ class SitemapCrawler {
     this.incrementOperations();
 
     this.client.queue(url, (result) => {
+      let statuscode = result.statusCode;
       ParseStr(result.body, (err, result) => {
         let sitemapIndex = SitemapIndex.fromData(result);
         let sitemap = Sitemap.fromData(result);
@@ -133,20 +136,23 @@ class SitemapCrawler {
               this.incrementOperations();
 
               this.client.queue(image.url, (result) => {
-                delete result.body;
+                delete result.body; // <-- trying to read image
                 this.results.push(result);
                 this.decrementOperations();
               });
             });
           });
         } else {
-          this.errors.push('Invalid sitemap `'+ url +'`');
+          statuscode === 401
+            ? this.errors.push(`You are unauthorized for this webpage: "${url}"`)
+            : this.errors.push(`Invalid sitemap: '${url}'`);
+          // this.errors.push('Invalid sitemap `' + url + '`');
         }
 
         this.decrementOperations();
       });
     }, (error) => {
-      this.errors.push('Could not fetch sitemap `'+ url +'`. Error: '+ error.code +'');
+      this.errors.push('Could not fetch sitemap `' + url + '`. Error: ' + error + '');
       this.decrementOperations();
     });
   };
@@ -159,7 +165,7 @@ class SitemapIndex {
 
   static fromData(data) {
     if (!data || !data.sitemapindex || !data.sitemapindex.sitemap) {
-      return false; 
+      return false; // returns false if sitemapindex is possible to make
     }
 
     let urls = data.sitemapindex.sitemap.map((sitemap) => {
@@ -183,8 +189,8 @@ class Sitemap {
     let urls = data.urlset.url.map((url) => {
       let images = url['image:image']
         ? url['image:image'].map((image) => {
-            return new Image(image['image:loc'][0]);
-          })
+          return new Image(image['image:loc'][0]);
+        })
         : [];
       return new Document(url.loc[0], images);
     });
@@ -206,20 +212,20 @@ class Image {
   }
 }
 
-(() => {
-  const url = 'protocol://domain/path';
-
-  const user = {
-    username: 'username',
-    password: 'password',
+Http.createServer((req, res) => {
+  let data = Url.parse(req.url, true).query;
+  let user = {
+    username: data.user || '',
+    password: data.pass || '',
   };
 
+  res.writeHead(200, {"Content-Type": "application/json"});
+
   let client = new HttpClient(user);
-  let sitemapCrawler = new SitemapCrawler(client, (results) => {
-    console.log(results);
-  }, (error) => {
-    console.log(error);
+  let sitemapCrawler = new SitemapCrawler(client, (results, errors) => {
+    res.write(JSON.stringify({ results: results, errors: errors }));
+    res.end();
   });
 
-  sitemapCrawler.crawlSitemap(url);
-})();
+  sitemapCrawler.crawlSitemap(data.url || 'none');
+}).listen(8000);
