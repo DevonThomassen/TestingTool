@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class Result extends Component {
+class Overview extends Component {
   render() {
     return (
       <React.Fragment>
@@ -25,4 +25,4 @@ class Result extends Component {
   }
 }
 
-export default Result;
+export default Overview;
