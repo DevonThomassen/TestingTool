@@ -21,6 +21,11 @@ button {
     margin-top: 10px;
 }
 
+.clearfix {
+    display: table;
+    clear: both;
+}
+
 .App {
     max-width: calc(100% - 100px);
     margin: 50px auto;
@@ -39,11 +44,6 @@ button {
     float: left;
     margin-right: 30px;
     box-sizing: border-box;
-}
-
-.clearfix {
-    display: table;
-    clear: both;
 }
 
 .results_container {
@@ -84,6 +84,13 @@ td, th {
     vertical-align: top;
     border: black 2px solid;
     padding: 4px 8px;
+}
+
+.good {
+    background: rgba(0, 255, 0, 0.3);
+}
+.bad {
+    background: rgba(255, 0, 0, 0.3);
 }
 
 .output_container table {
