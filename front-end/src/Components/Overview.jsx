@@ -4,22 +4,33 @@ class Overview extends Component {
   render() {
     return (
       <React.Fragment>
-        <tr>
-          <td>url</td>
-          <td>http://XxXxXxX.nl/sitemap.xml</td>
-        </tr>
-        <tr>
-          <td>time</td>
-          <td>Xs</td>
-        </tr>
-        <tr>
-          <td>pages</td>
-          <td>XXX</td>
-        </tr>
-        <tr>
-          <td>errors</td>
-          <td>XX</td>
-        </tr>
+        <div className='results_container'>
+          <table>
+            <thead>
+            <tr>
+              <th colSpan="2">Results</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Url</td>
+                <td>{this.props.data.url}</td>
+              </tr>
+              <tr>
+                <td>Time</td>
+                <td>{this.props.data.time}ms</td>
+              </tr>
+              <tr>
+                <td>Pages</td>
+                <td>{this.props.data.results}</td>
+              </tr>
+              <tr>
+                <td>Errors</td>
+                <td>{this.props.data.errors}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </React.Fragment>
     );
   }
