@@ -1,26 +1,52 @@
 import React, {Component} from 'react';
-import Result from "./Result";
+import Results from "./Results";
 import Overview from "./Overview";
 
 class Input extends Component {
-  render() {
-    function main() {
-      // TODO: This...
-      let url = document.getElementById('url').value;
-      let user = document.getElementById('user').value;
-      let pass = document.getElementById('pass').value;
-      let complete = encodeURI(`http://localhost:8000?url=${url}&user=${user}&pass=${pass}`);
-      console.log(complete);
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', complete);
-      xhr.onload = function () {
-        if (xhr.status === 200) {
-          console.log(JSON.parse(xhr.responseText));
-        } else console.log(xhr.status);
-      };;
-      xhr.send();
-    }
 
+  state = {
+    results: [],
+    errors: [],
+    metrics: {
+      url: 'http://example.org/sitemap.xml',
+      time: 0,
+      results: 0,
+      errors: 0,
+    }
+  }
+
+  apiRequest = () => {
+    // TODO: This...
+    let url = document.getElementById('url').value;
+    let user = document.getElementById('user').value;
+    let pass = document.getElementById('pass').value;
+    let apiUrl = encodeURI(`http://localhost:8000?url=${url}&user=${user}&pass=${pass}`);
+    console.log(apiUrl);
+    let self = this;
+    let start_time = new Date().getTime();
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', apiUrl);
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        let data = JSON.parse(xhr.responseText);
+        let request_time = new Date().getTime() - start_time;
+
+        self.setState({
+          results: data.results,
+          errors: data.errors,
+          metrics: {
+            url: url,
+            time: request_time,
+            results: data.results.length,
+            errors: data.errors.length
+          }
+        });
+      } else console.log(xhr.status);
+    };
+    xhr.send();
+  }
+
+  render() {
     return (
       <React.Fragment>
         <div className='input_container'>
@@ -30,41 +56,10 @@ class Input extends Component {
           <input id='user' type='text'/><br/>
           <label>Password: </label><br/>
           <input id='pass' type='password'/><br/>
-          <button onClick={main}>Get data</button>
+          <button onClick={this.apiRequest}>Get data</button>
         </div>
-        <div className='results_container'>
-          <table>
-            <thead>
-            <tr>
-              <th colSpan="2">
-                Results
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            {/*TODO: Make Overview table in component*/}
-            <Overview />
-            </tbody>
-          </table>
-        </div>
-        <div className="clearfix"></div>
-        <div className='output_container'>
-          <h3>Results</h3>
-          <table>
-            <thead>
-            <tr>
-              <th>#</th>
-              <th>URL</th>
-              <th>CODE</th>
-              <th>TIME</th>
-            </tr>
-            </thead>
-            <tbody>
-            {/*TODO: table generator on items*/}
-            <Result />
-            </tbody>
-          </table>
-        </div>
+        <Overview data={this.state.metrics}/>
+        <Results data={this.state.results}/>
       </React.Fragment>
     );
   }
