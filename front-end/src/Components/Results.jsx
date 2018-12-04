@@ -8,7 +8,7 @@ class Results extends Component {
         <div className="clearfix"></div>
         <div className='output_container'>
           <h3>Results</h3>
-          <table>
+          <table id='results'>
             <thead>
             <tr>
               <th>#</th>
@@ -18,9 +18,9 @@ class Results extends Component {
             </tr>
             </thead>
             <tbody>
-              { this.props.data.map((result, i) => {
-                return <Result data={result} num={i+1} key={i}/>;
-              }) }
+            {this.props.data.map((result, i) => {
+              return <Result data={result} num={i + 1} key={'Result' + i}/>;
+            })}
             </tbody>
           </table>
         </div>
