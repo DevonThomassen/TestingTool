@@ -29,7 +29,7 @@ class HttpClient {
 
   get(request, onComplete) {
     if (!Url.parse(request.urlStr).hostname) {
-      request.onError('Invalid url `'+ request.urlStr +'`.');
+      request.onError('Invalid url `' + request.urlStr + '`.');
       onComplete();
       return;
     }
@@ -38,8 +38,22 @@ class HttpClient {
     let options = {
       auth: this.username + ":" + this.password
     };
-    let protocol = url.protocol === 'http:' ? Http : Https;
+
+    let protocol = null;
+    switch (url.protocol) {
+      case 'http:':
+        protocol = Https;
+        break;
+      case 'https:':
+        protocol = Https;
+        break;
+    }
     let startTime = performance.now();
+
+    if(!protocol) {
+      request.onError('Protocol not supported `' + url.protocol + '`');
+      return;
+    }
 
     let req = protocol.get(url, options, (res) => {
       let data = '';
@@ -213,6 +227,7 @@ class Image {
 }
 
 Http.createServer((req, res) => {
+  let data = Url.parse(req.url, true).query;
   let user = {
     username: data.user || '',
     password: data.pass || '',
