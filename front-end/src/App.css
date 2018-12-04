@@ -1,4 +1,4 @@
-html, body, h1, h2, p, pre {
+html, body, h1, h2, p {
     margin: 0;
     padding: 0;
 }
@@ -20,6 +20,9 @@ input, button {
 button {
     margin-top: 10px;
 }
+button:active {
+    background-color: rgba(255, 255, 255, 0.4);
+}
 
 .clearfix {
     display: table;
@@ -37,6 +40,58 @@ button {
     content: '';
     display: table;
     clear: both;
+}
+
+#loader {
+    display: none;
+    position: relative;
+    height: 4px;
+    width: 100%;
+    overflow: hidden;
+    background-color: #ddd;
+}
+
+#loader:before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: -200px;
+    height: 4px;
+    width: 200px;
+    background-color: #2980b9;
+    animation: loading 2s linear infinite;
+}
+
+@keyframes loading {
+    from {
+        left: -400px;
+        width: 30%;
+    }
+    50% {
+        width: 30%;}
+    70% {
+        width: 70%;}
+    80% {
+        left: 50%;}
+    95% {
+        left: 120%;}
+    to {
+        left: 100%;}
+}
+
+#popup {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50px;
+    width: 100%;
+    color: red;
+    background-color: black;
+    font-weight: bold;
+    /*border: 2px solid black;*/
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .input_container {
