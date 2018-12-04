@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Errors from "./Errors";
 import Results from "./Results";
 import Overview from "./Overview";
 
@@ -16,10 +17,13 @@ class Input extends Component {
   }
 
   apiRequest = () => {
-    // TODO: This...
-    let url = document.getElementById('url').value;
-    let user = document.getElementById('user').value;
-    let pass = document.getElementById('pass').value;
+    const $ = function (id) {
+      return document.getElementById(id)
+    };
+    let url = $('url').value;
+    let user = $('user').value;
+    let pass = $('pass').value;
+    $('loader').style.display = 'block';
     let apiUrl = encodeURI(`http://localhost:8000?url=${url}&user=${user}&pass=${pass}`);
     console.log(apiUrl);
     let self = this;
@@ -41,7 +45,8 @@ class Input extends Component {
             errors: data.errors.length
           }
         });
-      } else console.log(xhr.status);
+        $('loader').style.display = 'none';
+      } else console.log(JSON.parse(xhr.status));
     };
     xhr.send();
   }
@@ -49,6 +54,7 @@ class Input extends Component {
   render() {
     return (
       <React.Fragment>
+        <div id='loader'></div>
         <div className='input_container'>
           <label>URL: </label><br/>
           <input id='url' type='text'/>
@@ -59,6 +65,7 @@ class Input extends Component {
           <button onClick={this.apiRequest}>Get data</button>
         </div>
         <Overview data={this.state.metrics}/>
+        <Errors data={this.state.errors}/>
         <Results data={this.state.results}/>
       </React.Fragment>
     );
