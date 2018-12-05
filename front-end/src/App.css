@@ -20,6 +20,7 @@ input, button {
 button {
     margin-top: 10px;
 }
+
 button:active {
     background-color: rgba(255, 255, 255, 0.4);
 }
@@ -49,6 +50,7 @@ button:active {
     width: 100%;
     overflow: hidden;
     background-color: #ddd;
+    margin: 20px 0;
 }
 
 #loader:before {
@@ -68,15 +70,20 @@ button:active {
         width: 30%;
     }
     50% {
-        width: 30%;}
+        width: 30%;
+    }
     70% {
-        width: 70%;}
+        width: 70%;
+    }
     80% {
-        left: 50%;}
+        left: 50%;
+    }
     95% {
-        left: 120%;}
+        left: 120%;
+    }
     to {
-        left: 100%;}
+        left: 100%;
+    }
 }
 
 #popup {
@@ -139,6 +146,10 @@ td, th {
     vertical-align: top;
     border: black 2px solid;
     padding: 4px 8px;
+}
+
+#results th {
+    cursor: pointer;
 }
 
 .good {
