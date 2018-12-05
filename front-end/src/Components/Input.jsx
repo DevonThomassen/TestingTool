@@ -57,7 +57,7 @@ class Input extends Component {
         <div id='loader'></div>
         <div className='input_container'>
           <label>URL: </label><br/>
-          <input id='url' type='text'/>
+          <input id='url' type='text' placeholder='Required'/>
           <label>Username: </label><br/>
           <input id='user' type='text'/><br/>
           <label>Password: </label><br/>
