@@ -65,13 +65,20 @@ class HttpClient {
       res.on('end', () => {
         let endTime = performance.now();
 
-        if (Math.floor(res.statusCode / 100) === 3) {
+        if (Math.floor(res.statusCode / 100) === 3 && res.headers.location) {
           let location = Url.resolve(url.href, res.headers.location);
           this.queue(location, request.onComplete, request.onError);
         } else {
           request.onComplete(new HttpResult(url.href, res.statusCode, Math.floor(endTime - startTime), data));
           onComplete();
         }
+      });
+    });
+
+    req.on('socket', (socket) => {
+      socket.setTimeout(10000);
+      socket.on('timeout', () => {
+        req.abort();
       });
     });
 
@@ -109,6 +116,7 @@ class SitemapCrawler {
     this.operations = 0;
     this.results = [];
     this.errors = [];
+    this.uniqueUrls = [];
   }
 
   incrementOperations() {
@@ -119,8 +127,20 @@ class SitemapCrawler {
     this.operations--;
 
     if (this.operations < 1) {
-      this.onComplete(this.results, this.errors);
+      this.complete()
     }
+  }
+
+  complete() {
+    this.results.forEach((result, i, arr) => {
+      let regex = RegExp('<(?:link|img)[^<]*?(?:href|src)\s*=\s*[\'"]http:\/\/');
+      if(result.body && regex.test(result.body)) {
+        arr[i].statusCode = 666;
+      }
+      delete arr[i].body;
+    });
+
+    this.onComplete(this.results, this.errors);
   }
 
   crawlSitemap(url) {
@@ -138,15 +158,23 @@ class SitemapCrawler {
           });
         } else if (sitemap) {
           sitemap.documents.map((document) => {
+            if (this.uniqueUrls.indexOf(document.url)  !== -1) {
+              return;
+            }
+
+            this.uniqueUrls.push(document.url);
             this.incrementOperations();
 
             this.client.queue(document.url, (result) => {
-              delete result.body;
               this.results.push(result);
               this.decrementOperations();
             });
 
             document.images.map((image) => {
+              if (this.uniqueUrls.indexOf(image.url) !== -1) {
+                return;
+              }
+              this.uniqueUrls.push(image.url);
               this.incrementOperations();
 
               this.client.queue(image.url, (result) => {
@@ -160,6 +188,7 @@ class SitemapCrawler {
           statuscode === 401
             ? this.errors.push(`You are unauthorized for this webpage: "${url}"`)
             : this.errors.push(`Invalid sitemap: '${url}'`);
+          // this.errors.push('Invalid sitemap `' + url + '`');
         }
 
         this.decrementOperations();
@@ -240,6 +269,9 @@ Http.createServer((req, res) => {
 
   let client = new HttpClient(user);
   let sitemapCrawler = new SitemapCrawler(client, (results, errors) => {
+    results = results.map((result, i) => {
+      return Object.assign({num: i + 1}, result);
+    });
     res.write(JSON.stringify({ results: results, errors: errors }));
     res.end();
   });
