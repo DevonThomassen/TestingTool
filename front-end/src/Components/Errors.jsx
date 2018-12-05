@@ -5,7 +5,7 @@ class Errors extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="clearfix"></div>
+        <div className="clearfix"/>
         <div className='output_container'>
           <h3>Errors</h3>
           <table id='errors'>
