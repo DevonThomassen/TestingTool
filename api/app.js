@@ -42,7 +42,7 @@ class HttpClient {
     let protocol = null;
     switch (url.protocol) {
       case 'http:':
-        protocol = Https;
+        protocol = Http;
         break;
       case 'https:':
         protocol = Https;
