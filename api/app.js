@@ -150,7 +150,7 @@ class SitemapCrawler {
               this.incrementOperations();
 
               this.client.queue(image.url, (result) => {
-                delete result.body; // <-- trying to read image
+                delete result.body;
                 this.results.push(result);
                 this.decrementOperations();
               });
@@ -160,7 +160,6 @@ class SitemapCrawler {
           statuscode === 401
             ? this.errors.push(`You are unauthorized for this webpage: "${url}"`)
             : this.errors.push(`Invalid sitemap: '${url}'`);
-          // this.errors.push('Invalid sitemap `' + url + '`');
         }
 
         this.decrementOperations();
@@ -179,7 +178,7 @@ class SitemapIndex {
 
   static fromData(data) {
     if (!data || !data.sitemapindex || !data.sitemapindex.sitemap) {
-      return false; // returns false if sitemapindex is possible to make
+      return false;
     }
 
     let urls = data.sitemapindex.sitemap.map((sitemap) => {
