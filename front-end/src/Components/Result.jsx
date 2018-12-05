@@ -5,7 +5,7 @@ class Result extends Component {
     return (
       <React.Fragment>
         <tr>
-          <td>{this.props.num}</td>
+          <td>{this.props.data.num}</td>
           <td>{this.props.data.url}</td>
           <td className={(this.props.data.statusCode === 200 ? 'good' : 'bad')}>{this.props.data.statusCode}</td>
           <td>{this.props.data.milliseconds}ms</td>
