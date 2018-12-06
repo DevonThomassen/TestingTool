@@ -56,25 +56,21 @@ class Results extends Component {
         <div className="clearfix"/>
         <div className='output_container'>
           <h3>Results</h3>
-          <table id='results'>
-            <thead>
-            <tr>
-              <th className={this.state.orderProperty !== 'num' || 'selected'} onClick={this.toggleSortByNum}>#</th>
-              <th className={this.state.orderProperty !== 'url' || 'selected'} onClick={this.toggleSortByUrl}>URL</th>
-              <th className={this.state.orderProperty !== 'statusCode' || 'selected'}
+          <div id='results' className={"table " + (this.state.orderAscending ? 'ordered-ascending' : 'ordered-descending') }>
+            <div className="row">
+              <div className={"head order " + (this.state.orderProperty !== 'num' ? '' : 'selected')} onClick={this.toggleSortByNum}>#</div>
+              <div className={"head order " + (this.state.orderProperty !== 'url' ? '' : 'selected')} onClick={this.toggleSortByUrl}>URL</div>
+              <div className={"head order " + (this.state.orderProperty !== 'statusCode' ? '' : 'selected')}
                   onClick={this.toggleSortByCode}>CODE
-              </th>
-              <th className={this.state.orderProperty !== 'milliseconds' || 'selected'}
+              </div>
+              <div className={"head order " + (this.state.orderProperty !== 'milliseconds' ? '' : 'selected')}
                   onClick={this.toggleSortByTime}>TIME
-              </th>
-            </tr>
-            </thead>
-            <tbody>
+              </div>
+            </div>
             {this.props.data.sort(this.orderFn).map((result) => {
               return <Result data={result} key={'Result' + result.num}/>;
             })}
-            </tbody>
-          </table>
+          </div>
         </div>
       </React.Fragment>
     );
