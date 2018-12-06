@@ -16,7 +16,9 @@ class Input extends Component {
     }
   }
 
-  apiRequest = () => {
+  apiRequest = (evt) => {
+    evt.preventDefault();
+
     const $ = function (id) {
       return document.getElementById(id)
     };
@@ -54,15 +56,17 @@ class Input extends Component {
   render() {
     return (
       <React.Fragment>
-        <div id='loader'></div>
+        <div id='loader'/>
         <div className='input_container'>
-          <label>URL: </label><br/>
-          <input id='url' type='text' placeholder='Required'/>
-          <label>Username: </label><br/>
-          <input id='user' type='text'/><br/>
-          <label>Password: </label><br/>
-          <input id='pass' type='password'/><br/>
-          <button onClick={this.apiRequest}>Get data</button>
+          <form onSubmit={this.apiRequest}>
+            <label>URL: </label><br/>
+            <input id='url' type='text' placeholder='Required'/>
+            <label>Username: </label><br/>
+            <input id='user' type='text'/><br/>
+            <label>Password: </label><br/>
+            <input id='pass' type='password'/><br/>
+            <input type='submit' value='Get data' />
+          </form>
         </div>
         <Overview data={this.state.metrics}/>
         <Errors data={this.state.errors}/>
