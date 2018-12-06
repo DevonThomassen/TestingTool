@@ -17,12 +17,47 @@ input, button {
     border: 1px solid #000;
 }
 
-button {
+input:last-child {
     margin-top: 10px;
 }
 
-button:active {
+input:last-child:active {
     background-color: rgba(255, 255, 255, 0.4);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.table {
+    width: 100%;
+    overflow: hidden;
+    border-collapse: collapse;
+}
+
+.row {
+    width: 100%;
+    display: flex;
+}
+
+.cell {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+}
+
+.cell:not(:first-child) {
+    margin-left: -2px;
+}
+
+.row:not(:first-child) {
+    margin-top: -2px;
+}
+
+.head {
+    display: block;
+    font-weight: bold;
+    width: 100%;
 }
 
 .clearfix {
@@ -65,7 +100,7 @@ button:active {
 }
 
 @keyframes loading {
-    from {
+    0% {
         left: -400px;
         width: 30%;
     }
@@ -81,24 +116,9 @@ button:active {
     95% {
         left: 120%;
     }
-    to {
+    100% {
         left: 100%;
     }
-}
-
-#popup {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 50px;
-    width: 100%;
-    color: red;
-    background-color: black;
-    font-weight: bold;
-    /*border: 2px solid black;*/
-    box-sizing: border-box;
-    text-align: center;
 }
 
 .input_container {
@@ -122,34 +142,60 @@ button:active {
     box-sizing: border-box;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    overflow: hidden;
+a:link, a:visited {
+    text-decoration: inherit;
+    color: inherit;
 }
 
-tbody > tr:nth-child(odd) {
+.row:nth-child(odd) {
     background-color: rgba(255, 255, 255, 0.65);
 }
 
-tbody > tr:nth-child(even) {
+.row:nth-child(even) {
     background-color: rgba(255, 255, 255, 0.45);
 }
 
-thead > tr {
+a.row:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.head {
     background-color: #000;
     color: #fff;
 }
 
-td, th {
+.head, .cell {
     text-align: left;
     vertical-align: top;
     border: black 2px solid;
+}
+
+.cell {
     padding: 4px 8px;
 }
 
-#results th {
+.head {
+    padding: 4px 8px 4px 14px;
+}
+
+.head.order:hover {
     cursor: pointer;
+    text-decoration: underline;
+}
+
+.head.selected {
+    position: relative;
+}
+
+.head.selected::before {
+    display: inline-block;
+    margin-left: -14px;
+    margin-right: 2px;
+    content: '^';
+}
+
+.ordered-ascending .head.selected::before {
+    transform: rotate(180deg);
 }
 
 .good {
@@ -160,20 +206,44 @@ td, th {
     background: rgba(255, 0, 0, 0.3);
 }
 
-.output_container table {
+.results_container .cell:first-child {
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.output_container .table {
     table-layout: fixed;
 }
 
-.output_container td {
+.output_container .cell {
     white-space: nowrap;
     overflow: hidden;
 }
 
-.output_container td:not(:nth-child(2)), .output_container th:not(:nth-child(2)) {
-    width: 44px;
+.output_container .head:not(:nth-child(2)),
+.output_container .cell:not(:nth-child(2)) {
+    width: 70px;
+    flex-shrink: 0;
+    text-align: center;
 }
 
-.output_container td:nth-child(2) {
+.output_container .head:nth-child(4),
+.output_container .cell:nth-child(4) {
+    width: 72px;
+    flex-shrink: 0;
+}
+
+.output_container .head:nth-child(1),
+.output_container .cell:nth-child(1),
+.output_container .cell:nth-child(4){
+    text-align: right;
+}
+
+.ms::after {
+    content: 'ms';
+}
+
+.output_container .cell:nth-child(2) {
     text-overflow: ellipsis;
 }
 
