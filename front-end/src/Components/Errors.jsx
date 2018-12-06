@@ -8,19 +8,15 @@ class Errors extends Component {
         <div className="clearfix"/>
         <div className='output_container'>
           <h3>Errors</h3>
-          <table id='errors'>
-            <thead>
-            <tr>
-              <th>#</th>
-              <th>ERROR</th>
-            </tr>
-            </thead>
-            <tbody>
+          <div className="table" id='errors'>
+            <div className="row">
+              <div className="head">#</div>
+              <div className="head">ERROR</div>
+            </div>
             {this.props.data.map((result, i) => {
               return <Error data={result} num={i + 1} key={i}/>;
             })}
-            </tbody>
-          </table>
+          </div>
         </div>
       </React.Fragment>
     );
