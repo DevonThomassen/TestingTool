@@ -70,8 +70,8 @@ class HttpClient {
           this.queue(location, request.onComplete, request.onError);
         } else {
           request.onComplete(new HttpResult(url.href, res.statusCode, Math.floor(endTime - startTime), data));
-          onComplete();
         }
+        onComplete();
       });
     });
 
@@ -137,7 +137,6 @@ class SitemapCrawler {
       if(result.body && regex.test(result.body)) {
         arr[i].statusCode = 666;
       }
-      delete arr[i].body;
     });
 
     this.onComplete(this.results, this.errors);
@@ -188,7 +187,6 @@ class SitemapCrawler {
           statuscode === 401
             ? this.errors.push(`You are unauthorized for this webpage: "${url}"`)
             : this.errors.push(`Invalid sitemap: '${url}'`);
-          // this.errors.push('Invalid sitemap `' + url + '`');
         }
 
         this.decrementOperations();
