@@ -4,10 +4,10 @@ class Error extends Component {
   render() {
     return (
       <React.Fragment>
-        <tr>
-          <td>{this.props.num}</td>
-          <td>{this.props.data}</td>
-        </tr>
+        <div className="row">
+          <div className="cell">{this.props.num}</div>
+          <div className="cell">{this.props.data}</div>
+        </div>
       </React.Fragment>
     );
   }
