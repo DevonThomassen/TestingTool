@@ -4,31 +4,27 @@ class Overview extends Component {
   render() {
     return (
       <div className='results_container'>
-        <table>
-          <thead>
-          <tr>
-            <th colSpan="2">Results</th>
-          </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Url</td>
-              <td>{this.props.data.url}</td>
-            </tr>
-            <tr>
-              <td>Time</td>
-              <td>{this.props.data.time}ms</td>
-            </tr>
-            <tr>
-              <td>Pages</td>
-              <td>{this.props.data.results}</td>
-            </tr>
-            <tr>
-              <td>Errors</td>
-              <td>{this.props.data.errors}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="table">
+          <div className="row">
+            <div className="head" style={{colspan: 2}}>Results</div>
+          </div>
+          <div className="row">
+            <div className="cell">Url</div>
+            <div className="cell">{this.props.data.url}</div>
+          </div>
+          <div className="row">
+            <div className="cell">Time</div>
+            <div className="cell ms">{this.props.data.time}</div>
+          </div>
+          <div className="row">
+            <div className="cell">Pages</div>
+            <div className="cell">{this.props.data.results}</div>
+          </div>
+          <div className="row">
+            <div className="cell">Errors</div>
+            <div className="cell">{this.props.data.errors}</div>
+          </div>
+        </div>
       </div>
     );
   }
