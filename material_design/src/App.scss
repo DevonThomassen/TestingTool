@@ -115,6 +115,12 @@ input:last-child {
   margin-top: 30px;
   clear: both;
   box-sizing: border-box;
+
+  th:first-child,
+  td:first-child {
+    width: 50px;
+    text-align: right;
+  }
 }
 
 @media screen and (max-width: 760px) {
@@ -131,5 +137,6 @@ input:last-child {
   .results_container {
     width: 100%;
     padding: 20px 0;
+    max-width: none;
   }
 }
