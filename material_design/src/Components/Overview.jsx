@@ -14,22 +14,15 @@ const CustomTableCell = withStyles(theme => ({
   },
   body: {
     fontSize: 14,
+
+    '&:first-child': {
+      padding: `4px 0px 4px 24px`
+    },
   },
 }))(TableCell);
 
 const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-  },
-  table: {
-    minWidth: 700,
-  },
-  row: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.background.default,
-    },
-  },
+
 });
 
 function Overview(props) {
