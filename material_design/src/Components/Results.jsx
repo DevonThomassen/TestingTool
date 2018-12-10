@@ -19,21 +19,11 @@ const CustomTableCell = withStyles(theme => ({
 }))(TableCell);
 
 const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-  },
-  table: {
-    minWidth: 700,
-  },
-  row: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.background.default,
-    },
-  },
+  index: {
+    width: `50px`,
+    padding: `4px 0px 4px 24px`
+  }
 });
-
-
 
 function Results(props) {
   const {classes} = props;
@@ -46,7 +36,7 @@ function Results(props) {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>#</CustomTableCell>
+                <CustomTableCell className={classes.index}>#</CustomTableCell>
                 <CustomTableCell>URL</CustomTableCell>
                 <CustomTableCell>Code</CustomTableCell>
                 <CustomTableCell>TIME</CustomTableCell>
