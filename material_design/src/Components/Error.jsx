@@ -1,47 +1,36 @@
-import React, {Component} from 'react';
-import TableBody from "@material-ui/core/TableBody";
-import TableRow from "@material-ui/core/TableRow";
+import React from 'react';
 import {withStyles} from "@material-ui/core";
+import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 
 
 const CustomTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 14,
-  },
+
 }))(TableCell);
 
 const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
+  row:{
+    '&:nth-child(odd)': {
+      backgroundColor: `#a0a0a0`
+    }
   },
-  table: {
-    minWidth: 700,
-  },
-  row: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.background.default,
-    },
+  index: {
+    width: `50px`,
+    paddingLeft: `0`,
+    paddingRight: `0`,
   },
 });
 
 function Error(props) {
   const {classes} = props;
-
   return (
     <React.Fragment>
-      <TableRow>
-        <CustomTableCell>{props.num}</CustomTableCell>
+      <TableRow className={classes.row}>
+        <CustomTableCell className={classes.index}>{props.num}</CustomTableCell>
         <CustomTableCell>{props.data}</CustomTableCell>
       </TableRow>
     </React.Fragment>
   )
 }
 
-export default Error;
+export default withStyles(styles)(Error);
