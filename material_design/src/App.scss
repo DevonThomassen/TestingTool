@@ -4,19 +4,15 @@ $loader-height: 4px;
   box-sizing: border-box;
 }
 
-html, body, h1, h2, p {
+html, body {
+  height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
 }
 
-html, body {
-  height: 100%;
-  width: 100%;
-}
-
 input, button {
   width: 100%;
-  box-sizing: border-box;
   margin-bottom: 10px;
   padding: 4px;
   border: 1px solid #000;
@@ -45,12 +41,6 @@ input:last-child {
 
 .ms::after {
   content: 'ms';
-}
-
-.head, .cell {
-  text-align: left;
-  vertical-align: top;
-  border: black 2px solid;
 }
 
 #loader {
@@ -97,16 +87,22 @@ input:last-child {
 }
 
 .input_container {
-  width: 300px;
+  width: 400px;
   float: left;
   margin-right: 30px;
-  box-sizing: border-box;
+
+  div {
+    margin-top: 0;
+  }
+
+  button {
+    margin-top: 10px;
+  }
 }
 
 .results_container {
-  padding: 20px;
+  padding: 0 20px 20px;
   overflow: hidden;
-  box-sizing: border-box;
   max-width: 600px;
 }
 
@@ -114,12 +110,50 @@ input:last-child {
   width: 100%;
   margin-top: 30px;
   clear: both;
-  box-sizing: border-box;
 
   th:first-child,
   td:first-child {
     width: 50px;
     text-align: right;
+  }
+
+  .order:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .selected::before {
+    position: relative;
+    display: inline-block;
+    content: '▲';
+    margin-left: -14px;
+    margin-right: 2px;
+  }
+
+  .ordered-ascending .selected::before {
+    transform: rotate(180deg);
+  }
+
+  .image td:nth-child(2)::before {
+    content: '\1F4F7';
+    margin-right: 5px;
+  }
+
+  .link {
+    cursor: pointer;
+
+    td:nth-child(2)::before {
+      content: '\1F517';
+      margin-right: 5px;
+    }
+  }
+
+  .good {
+    background: rgba(0, 255, 0, 0.3);
+  }
+
+  .bad {
+    background: rgba(255, 0, 0, 0.3);
   }
 }
 
@@ -132,6 +166,10 @@ input:last-child {
 
   .input_container {
     width: 100%;
+
+    div, button {
+      margin-left: 0;
+    }
   }
 
   .results_container {
