@@ -73,7 +73,7 @@ class Input extends React.Component {
       } else console.log(JSON.parse(xhr.status));
     };
     xhr.send();
-  }
+  };
 
   handleChange = name => event => {
     this.setState({
@@ -91,31 +91,28 @@ class Input extends React.Component {
           <form className={classes.container} noValidate autoComplete="off">
             <TextField
               id='url'
-              required
-              label="Url"
               className={classes.textField}
+              label="Url"
               margin="normal"
-              fullWidth
-            />
+              required
+              fullWidth/>
             <TextField
               id='user'
-              label="Username"
               className={classes.textField}
+              label="Username"
               value={this.state.name}
               onChange={this.handleChange('name')}
               margin="normal"
-              fullWidth
-            />
+              fullWidth/>
             <TextField
               id='pass'
-              label="Password"
               className={classes.textField}
+              label="Password"
               type="password"
               autoComplete="current-password"
               margin="normal"
-              fullWidth
-            />
-            <Button onClick={this.apiRequest} variant="contained" color="primary" className={classes.button} fullWidth>
+              fullWidth/>
+            <Button onClick={this.apiRequest} variant="contained" color="secondary" className={classes.button} fullWidth>
               Send
               <Icon className={classes.rightIcon}>send</Icon>
             </Button>
