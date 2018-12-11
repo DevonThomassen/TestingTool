@@ -1,17 +1,14 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {withStyles} from "@material-ui/core";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 
+const CustomTableCell = TableCell;
 
-const CustomTableCell = withStyles(theme => ({
-
-}))(TableCell);
-
-const styles = theme => ({
-  row:{
-    '&:nth-child(odd)': {
-      backgroundColor: `#a0a0a0`
+const styles = () => ({
+  row: {
+    '&:nth-child(even)': {
+      backgroundColor: `#dbdbdb`
     }
   },
   index: {
@@ -21,16 +18,18 @@ const styles = theme => ({
   },
 });
 
-function Error(props) {
-  const {classes} = props;
-  return (
-    <React.Fragment>
-      <TableRow className={classes.row}>
-        <CustomTableCell className={classes.index}>{props.num}</CustomTableCell>
-        <CustomTableCell>{props.data}</CustomTableCell>
-      </TableRow>
-    </React.Fragment>
-  )
+class Error extends Component {
+  render() {
+    const {classes} = this.props;
+    return (
+      <React.Fragment>
+        <TableRow className={classes.row}>
+          <CustomTableCell className={classes.index}>{this.props.num}</CustomTableCell>
+          <CustomTableCell>{this.props.data}</CustomTableCell>
+        </TableRow>
+      </React.Fragment>
+    );
+  }
 }
 
 export default withStyles(styles)(Error);
