@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -16,56 +16,55 @@ const CustomTableCell = withStyles(theme => ({
     fontSize: 14,
 
     '&:first-child': {
+      width: `120px`,
       padding: `4px 0px 4px 24px`
     },
   },
 }))(TableCell);
 
-const styles = theme => ({
-
-});
-
-function Overview(props) {
-  const {classes} = props;
-  return (
-    <div className='results_container'>
-      <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <CustomTableCell colSpan={2}>Results</CustomTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <CustomTableCell>
-                Url
-              </CustomTableCell>
-              <CustomTableCell>{props.data.url}</CustomTableCell>
-            </TableRow>
-            <TableRow>
-              <CustomTableCell>
-                Time
-              </CustomTableCell>
-              <CustomTableCell className='ms'>{props.data.time}</CustomTableCell>
-            </TableRow>
-            <TableRow>
-              <CustomTableCell>
-                Pages
-              </CustomTableCell>
-              <CustomTableCell>{props.data.results}</CustomTableCell>
-            </TableRow>
-            <TableRow>
-              <CustomTableCell>
-                Errors
-              </CustomTableCell>
-              <CustomTableCell>{props.data.errors}</CustomTableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </Paper>
-    </div>
-  );
+class Overview extends Component {
+  render() {
+    const {classes} = this.props;
+    return (
+      <div className='results_container'>
+        <Paper className={classes.root}>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <CustomTableCell colSpan={2}>Results</CustomTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <CustomTableCell>
+                  Url
+                </CustomTableCell>
+                <CustomTableCell>{this.props.data.url}</CustomTableCell>
+              </TableRow>
+              <TableRow>
+                <CustomTableCell>
+                  Time
+                </CustomTableCell>
+                <CustomTableCell className='ms'>{this.props.data.time}</CustomTableCell>
+              </TableRow>
+              <TableRow>
+                <CustomTableCell>
+                  Pages
+                </CustomTableCell>
+                <CustomTableCell>{this.props.data.results}</CustomTableCell>
+              </TableRow>
+              <TableRow>
+                <CustomTableCell>
+                  Errors
+                </CustomTableCell>
+                <CustomTableCell>{this.props.data.errors}</CustomTableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Paper>
+      </div>
+    );
+  }
 }
 
-export default withStyles(styles)(Overview);
+export default withStyles({})(Overview);
