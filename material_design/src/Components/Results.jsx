@@ -25,7 +25,7 @@ const styles = () => ({
   },
 
   item: {
-    padding: `4px 24px 4px 24px`,
+    padding: `4px 24px`,
     width: `50px`,
     textAlign: `center`
   }
@@ -33,8 +33,6 @@ const styles = () => ({
 
 
 class Results extends Component {
-
-  state = {};
 
   constructor(props) {
     super(props);
