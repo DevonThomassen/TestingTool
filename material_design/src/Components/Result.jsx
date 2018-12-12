@@ -7,6 +7,8 @@ const CustomTableCell = TableCell;
 
 const styles = () => ({
   row: {
+    width: `50px`,
+
     '&:nth-child(even)': {
       backgroundColor: `#dbdbdb`
     }
@@ -18,7 +20,7 @@ const styles = () => ({
   },
   item: {
     width: `50px`,
-    padding: `4px 24px 4px 24px`,
+    padding: `4px 24px`,
     textAlign: `center`,
 
     '&:last-of-type': {
@@ -29,7 +31,7 @@ const styles = () => ({
 
 
 class Result extends Component {
-  
+
   b64EncodeUnicode(str) {
     return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
       function toSolidBytes(match, p1) {
