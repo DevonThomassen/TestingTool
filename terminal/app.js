@@ -103,19 +103,11 @@ class HttpRequest {
 
 class HttpResult {
   constructor(url, statusCode, milliseconds, body) {
-    this.id = this.generateId(); //FIXME
     this.url = url;
     this.statusCode = statusCode;
     this.milliseconds = milliseconds;
     this.body = body;
     this.mixedContent = null;
-  }
-
-  generateId() {
-    if (!HttpResult.count) {
-      HttpResult.count = 0;
-    }
-    return ++HttpResult.count;
   }
 
   isSuccess() {
@@ -277,9 +269,6 @@ class Image {
 
 if (Args.h || Args.help) {
   console.log();
-  console.log(`One dash before a letter [-x]`);
-  console.log(`Two dashes before a word [--word]`);
-  console.log();
   console.log(`Valid flags: `);
   console.log(`node app.js [-h | --help] [--url] [-u | --username] [-p | --password] [-r | --run]`);
   console.log(`\r\n\r\nCommands:\r\n${`-`.repeat(50)}\r\n`);
@@ -289,7 +278,7 @@ if (Args.h || Args.help) {
   console.log(`  -p \t| --password \t Password for authorization need [--url]`);
   console.log(`  -r \t| --run \t Run API for the front-end default port: ${Env.PORT}`);
   console.log(`  -P \t| --port \t Run API on specific port`);
-  console.log(`  -d \t| --delete \t delete all urls statuscode starting with 2`);
+  console.log(`  -s \t| --strip \t Strips all succesfull results`);
 } else if (Args.url) {
   console.log(`Getting data from: ${Args.url}...`);
   let user = {
@@ -303,7 +292,7 @@ if (Args.h || Args.help) {
       console.log()
       console.log(`\x1b[32m%s\x1b[0m`, `Results:`)
       results.map((result) => {
-        if (Args.d || Args.delete) {
+        if (Args.s || Args.strip) {
           result.isSuccess() || console.log(`\x1b[31m%s\x1b[0m`, `${result.statusCode} | ${result.url}`)
         } else {
           let color = result.isSuccess()
