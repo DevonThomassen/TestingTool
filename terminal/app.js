@@ -270,26 +270,26 @@ class Image {
 if (Args.h || Args.help) {
   console.log();
   console.log(`Valid flags: `);
-  console.log(`node app.js [-h | --help] [--url] [-u | --username] [-p | --password] [-r | --run]`);
+  console.log(`node app.js [-h | --help] [-U | --url] [-u | --username] [-p | --password] [-r | --run]`);
   console.log(`\r\n\r\nCommands:\r\n${`-`.repeat(50)}\r\n`);
   console.log(`  -h \t| --help \t Help menu`);
-  console.log(`  \t  --url \t Url of Sitemap`);
+  console.log(`  -U \t| --url \t Url of Sitemap`);
   console.log(`  -u \t| --username \t Username for authorization need [--url]`);
   console.log(`  -p \t| --password \t Password for authorization need [--url]`);
   console.log(`  -r \t| --run \t Run API for the front-end default port: ${Env.PORT}`);
   console.log(`  -P \t| --port \t Run API on specific port`);
   console.log(`  -s \t| --strip \t Strips all succesfull results`);
-} else if (Args.url) {
+} else if (Args.U || Args.url) {
   console.log(`Getting data from: ${Args.url}...`);
   let user = {
-    username: (Args.u || '') || (Args.username || ''),
-    password: (Args.p || '') || (Args.password || ''),
+    username: Args.u || Args.username || '',
+    password: Args.p || Args.password || '',
   };
 
   let client = new HttpClient(user);
   let sitemapCrawler = new SitemapCrawler(client, (results, errors) => {
     if (results.length > 0) {
-      console.log()
+      console.log();
       console.log(`\x1b[32m%s\x1b[0m`, `Results:`)
       results.map((result) => {
         if (Args.s || Args.strip) {
@@ -302,20 +302,14 @@ if (Args.h || Args.help) {
         }
       });
 
-      let successCount = results.filter((result) => {
-        return result.isSuccess()
-      }).length;
-      let errorCount = results.filter((result) => {
-        return !result.isSuccess()
-      }).length;
-      let mixedContentCount = results.filter((result) => {
-        return result.mixedContent
-      }).length;
+      let successCount = results.filter((result) => { return result.isSuccess() }).length;
+      let errorCount = results.filter((result) => { return !result.isSuccess() }).length;
+      let mixedContentCount = results.filter((result) => { return result.mixedContent }).length;
 
       console.log();
-      console.log(`Success: ${successCount}`);
-      console.log(`Error: ${errorCount}`);
-      console.log(`MixedContent: ${mixedContentCount}`);
+      console.log(`\x1b[32m%s\x1b[0m`, `Success: ${successCount}`);
+      console.log(`\x1b[31m%s\x1b[0m`, `Error: ${errorCount}`);
+      console.log(`\x1b[33m%s\x1b[0m`, `MixedContent: ${mixedContentCount}`);
 
       if (errorCount > 0) {
         console.error('\x1b[31m%s\x1b[0m', 'Sitemap has errors! Pls fix :c');
@@ -325,8 +319,8 @@ if (Args.h || Args.help) {
       }
     }
     if (errors.length > 0) {
-      console.log(``)
-      console.log(`\x1b[31m%s\x1b[0m`, `Errors:`)
+      console.log();
+      console.log(`\x1b[31m%s\x1b[0m`, `Errors:`);
       errors.map((error, i) => {
         console.log(i, error);
       });
@@ -338,14 +332,11 @@ if (Args.h || Args.help) {
   Http.createServer((req, res) => {
     let data = Url.parse(req.url, true).query;
     let user = {
-      username: (Args.u || '') || (Args.username || ''),
-      password: (Args.p || '') || (Args.password || ''),
+      username: data.user || '',
+      password: data.pass || '',
     };
 
     res.setHeader('Access-Control-Allow-Origin', '*');
-    // res.setHeader('Access-Control-Request-Method', '*');
-    // res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
-    // res.setHeader('Access-Control-Allow-Headers', '*');
     res.writeHead(200, {"Content-Type": "application/json"});
 
     let client = new HttpClient(user);
