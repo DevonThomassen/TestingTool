@@ -40,7 +40,7 @@ class HttpClient {
     }
   }
 
-  get(request, onComplete: Function) {
+  get(request: HttpRequest, onComplete: Function) {
     if (!Url.parse(request.urlStr).hostname) {
       request.onError('Invalid url `' + request.urlStr + '`.');
       onComplete();
