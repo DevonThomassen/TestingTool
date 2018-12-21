@@ -5,11 +5,7 @@ interface Props {
   info: string;
 }
 
-interface State {
-  nothing_yet: string
-}
-
-class Error extends React.Component<Props, State> {
+class Error extends React.Component<Props> {
   public render() {
     return (
       <React.Fragment>
