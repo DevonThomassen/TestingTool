@@ -1,16 +1,12 @@
 import * as React from 'react';
-import { IfResult } from './IfResult';
+import CResult from '../classes/Result';
 
 
 interface Props {
-  result: IfResult;
+  result: CResult;
 }
 
-interface State {
-  nothing_yet: string
-}
-
-class Result extends React.Component<Props, State> {
+class Result extends React.Component<Props, {}> {
   public render() {
     return (
       <React.Fragment>
