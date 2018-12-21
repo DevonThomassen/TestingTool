@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { IfMetrics } from './IfMetrics';
+import CMetrics from '../classes/Metrics';
 
 interface Props {
-  metrics: IfMetrics;
+  metrics: CMetrics;
 }
 
-interface State {
-  nothing_yet: string;
-}
-
-class Overview extends React.Component<Props, State> {
+class Overview extends React.Component<Props, {}> {
   public render() {
     return (
       <div className='results_container'>
