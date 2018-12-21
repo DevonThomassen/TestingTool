@@ -1,19 +1,19 @@
 import * as React from 'react';
+import CMetrics from '../classes/Metrics';
+import CResult from '../classes/Result';
 import Errors from './Errors';
-import { IfMetrics } from './IfMetrics';
-import { IfResult } from './IfResult';
 import Overview from './Overview';
 import Results from './Results';
 
 interface State {
-  results: IfResult[];
+  results: CResult[];
   errors: string[];
-  metrics: IfMetrics;
+  metrics: CMetrics;
 }
 
 class Input extends React.Component<{}, State> {
 
-  state: State = {
+  public state: State = { // readonly?
     results: [],
     errors: [],
     metrics: {
@@ -24,7 +24,7 @@ class Input extends React.Component<{}, State> {
     }
   }
 
-  apiRequest = (evt: any) => {
+  apiRequest = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     const $ = (id: string) => {
       return (document.getElementById(id) as HTMLInputElement);
@@ -59,9 +59,14 @@ class Input extends React.Component<{}, State> {
           }
         });
         $('loader').style.display = 'none';
-      } else { 
-        console.log(xhr.status); 
+      } else {
+        console.log(`XHR status: ${xhr.status}`);
       }
+    };
+    xhr.onerror = () => {
+      console.error(`Can't reach the API`);
+      console.log(`XHR status: ${xhr.status}`);
+      $('loader').style.display = 'none';
     };
     xhr.send();
   }
